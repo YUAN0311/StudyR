@@ -6,4 +6,10 @@ c=3+2i
 class(c)
 d="300"
 class(d)
-
+e=1:10
+class(e)
+f=3L
+class(f)
+.Machine$double.xmax
+.Machine$double.xmin
+.Machine$integer.max
