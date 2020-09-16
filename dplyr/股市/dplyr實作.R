@@ -1,10 +1,12 @@
 .libPaths("D:/RStudio")
-setwd("D:/RStudio/StudyR/dplyr")
-install.packages("dplyr")
-install.packages("tidyverse")
+setwd("D:/RStudio/StudyR/dplyr/股市")
+#install.packages("dplyr")
+#install.packages("tidyverse")
 library(dplyr)
 library(tidyverse)
 rm(list=ls())
+options(pillar.subtle = FALSE)
+options(pillar.sigfig = 7)
 #讀取資料
 stockData=read.csv("stockdata.csv",
                    header = TRUE,
@@ -78,8 +80,8 @@ stockData%>% group_by(ind)%>% summarise(sum_close=mean(close))
 stockData%>% group_by(ind)%>% mutate(sum_close=mean(close))                
 #lag
 #將數列往"下"移動一格,計算報酬率時常用
-stockData %>% arrange(code,date) %>% group_by(code) %>% mutate(ret = (close/lag(close,1)) -1)                     
-
+y=stockData %>% arrange(code,date) %>% group_by(code) %>% mutate(ret = (close/lag(close,1)) -1)                     
+y
 #distinct
 #將指定變數中的"非重複"值抽出
 stockData %>% distinct(ind)
