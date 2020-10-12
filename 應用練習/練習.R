@@ -120,3 +120,55 @@ paste(a,sys_date)
 a=c(11:14,NA)
 sum(a,na.rm = T)
 median(a,na.rm = T)
+
+rm(list=ls())
+i=0
+while(i<13){
+  print(month.name[i])
+  i=i+1
+}
+a=c()
+coin=c(TRUE,FALSE)
+b=1
+while(sum(a)<3){
+  a[b] = sample(coin,size = 1)
+  b=b+1
+}
+a
+length(a)
+library(lubridate) 
+weekdays
+month.name
+week=c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+week[1]
+for (i in week) {
+  print(i)
+}
+i=1
+while(i<8){
+  print(week[i])
+  i=i+1
+}
+week=c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+for (i in week) {
+  if(i==week[2])next
+  if(i==week[3])next
+  if(i==week[4])next
+  if(i==week[5])next
+  if(i==week[6])next
+  print(i)
+}
+
+
+x=function(n){
+  n=as.integer(n)
+  ans=1
+  for (i in 1:n)
+    ans=n*6
+  {
+    return(ans)
+  }
+}
+x(9)
+nrow(iris)
+iris
