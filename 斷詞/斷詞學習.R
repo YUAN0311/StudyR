@@ -19,13 +19,29 @@ cutter <- worker(bylines = F)
 # 使用斷詞器斷詞(有兩種寫法)
 #segment(content, cutter)
 cutter[content]
-  
+
+new_words <- c("紐約商業交易所","探勘井","頁岩油","輕值原油")
+# 一次只能加入一個詞，常常需要搭配迴圈使用
+for (i in 1:length(new_words)) {
+  new_user_word(cutter, new_words[i])
+}
+
 content <- str_remove_all(content, "[0-9a-zA-Z]+?")
 cutter[content]
-}
-x <- cutter[content]
-x
-# 計算詞彙頻率
+
+# 匯出新詞
+new_words <- c("紐約商業交易所","探勘井","頁岩油","輕值原油")
+writeLines(new_words, "new_words.txt")
+# 設定停止詞
+stop_words <- c("在","的","下","個","來","至","座","亦","與","或","日","月","年","週")
+writeLines(stop_words, "stop_words.txt")
+# 重新定義斷詞器，匯入停止詞
+cutter <- worker(user = "new_words.txt", stop_word = "stop_words.txt", bylines = FALSE)
+seg_words <- cutter[content]
+seg_words
+
+  
+# 計算詞彙頻率 
 txt_freq <- freq(x)
 # 由大到小排列
 txt_freq <- arrange(txt_freq, desc(freq))
@@ -40,15 +56,5 @@ wordcloud(txt_freq$char, txt_freq$freq, min.freq = 2, random.order = F, ordered.
 wordcloud2(filter(txt_freq, freq > 1), 
            minSize = 2, fontFamily = "Microsoft YaHei", size = 1)
 
-#big5 utf-8 轉換？
 
-# 匯出新詞
-new_words <- c("紐約商業交易所","探勘井","頁岩油","輕值原油")
-writeLines(new_words, "new_words.txt")
-# 設定停止詞
-stop_words <- c("在","的","下","個","來","至","座","亦","與","或","日","月","年","週")
-writeLines(stop_words, "stop_words.txt" )
-# 重新定義斷詞器，匯入停止詞
-cutter <- worker(user = "new_words.txt", stop_word = "stop_words.txt", bylines = FALSE, locale = "UTF-8")
-seg_words <- cutter[content]
-seg_words
+
