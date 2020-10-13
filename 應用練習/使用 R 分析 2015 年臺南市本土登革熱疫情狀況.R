@@ -10,12 +10,17 @@ str(dengue)
 #summary()可以做簡單的敘述統計
 summary(dengue)
 #畫地圖
-install.packages("ggmap")
-install.packages("mapproj")
+#install.packages("ggmap")
+#install.packages("mapproj")
 library(ggmap)
 library(mapproj)
 register_google(key = "AIzaSyChHEn5zbFdUV0xQXxclzjPU6wBOY5_20Q")
-
+#location直接輸入地名，也可輸入經緯度
+#zoom是地圖大小
+#language是地圖文字語言
+#maptype是地圖類型(常用：roadmap、satellite、hybrid、toner-lite)
+#darken為地圖亮度
+#geom_point為地圖的點
 map <- get_map(location = "Taiwan", zoom = 7,
                language = "zh-TW", maptype = "roadmap")
 ggmap(map, darken = c(0.5, "white")) +
@@ -34,12 +39,13 @@ ggmap(map, darken = c(0.5, "white")) +
   geom_point(aes(x = 經度座標, y = 緯度座標),
              color = "red", data = dengue) +
   geom_rect(aes(xmin = 120, xmax = 120.6, ymin = 22.8, ymax = 23.5),
-            alpha = 0.1)
+            alpha = 0.1)#alpha為矩形透明度
 
 #接著把實際的資料篩選出來：
 filter.idx1 <- dengue$緯度座標 > 22.8 & dengue$緯度座標 < 23.5
 filter.idx2 <- dengue$經度座標 > 120 & dengue$經度座標 < 120.6
 dengue.tn <- dengue[filter.idx1 & filter.idx2, ]
+dengue.tn
 #把篩選好的資料畫在地圖上：臺南市全年的登革熱病例分佈地圖。
 map <- get_map(location = c(lon = 120.246100, lat = 23.121198),
                zoom = 10, language = "zh-TW")
@@ -47,7 +53,9 @@ ggmap(map, darken = c(0.5, "white")) +
   geom_point(aes(x = 經度座標, y = 緯度座標),
              color = "red", data = dengue.tn)
 #從上面 dengue 的 summary 輸出中可以看到行政區的名稱有一些問題，我們將 dengue.tn$區別 的 levels 列出來看一下：
+#levels 只能用在factor
 levels(dengue.tn$區別)
+dengue.tn$區別
 #修改區別
 dengue.tn[dengue.tn$區別 == "北　區", ]$區別 <- "北區"
 dengue.tn[dengue.tn$區別 == "東　區", ]$區別 <- "東區"
@@ -58,11 +66,18 @@ dengue.tn$區別 <- factor(dengue.tn$區別)
 #然後再確認一次區別名稱
 levels(dengue.tn$區別)
 #畫出每週登革熱的病例數統計圖
+#hist是直方圖
+#break間格
+#freq百分比
 hist(as.Date(dengue.tn$確診日), breaks = "weeks",
      freq = TRUE, main = "登革熱每週病例數", xlab = "日期",
      ylab = "病例數", format = "%m/%d")
+hist(as.Date(dengue.tn$確診日), breaks = "weeks",
+     freq = F, main = "登革熱每週病例數", xlab = "日期",
+     ylab = "病例數", format = "%m/%d")
 #計算每個月的登革熱病例數
 dengue.tn$month <- format(as.Date(dengue.tn$確診日), "%m")
+#table樞紐分析
 table(dengue.tn$month)
 barplot(table(dengue.tn$month), xlab = "月份", ylab = "病例數",
         main = "登革熱每月病例數")
